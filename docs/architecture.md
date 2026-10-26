@@ -110,6 +110,33 @@ Response direction: Data → Domain → UI
 
 The architecture diagram is provided separately as `architecture.png`. It illustrates the three layers, their responsibilities, the planned classes, and the direction of requests and results.
 
-## 8. Additional Data Flow Documentation
+8. Additional Data Flow Documentation
 
-The detailed Unidirectional Data Flow explanation and the six-step feature walk-through will be added by the team member responsible for that section, in coordination with the System Architecture documentation.
+8.1 Unidirectional Data Flow
+
+Example Screen: School Details
+
+UiState
+
+* Success: School details are available and displayed.
+* Error: School details could not be retrieved.
+
+Events (UI → ViewModel)
+
+Request school details; tap the favorite heart to save or remove a school from Favorites.
+
+Explanation
+
+The School Details screen sends user interactions to SchoolDetailViewModel for processing. The ViewModel coordinates school information retrieval through GetSchoolDetailsUseCase and favorite management through ManageFavoritesUseCase. The Domain layer uses the SchoolRepository and FavoriteRepository interfaces, while the Data layer handles data operations through their repository implementations. The resulting UI state is displayed on the screen, including the current favorite status.
+
+8.2 Walk-through of One Feature
+
+Feature: Save a School to Favorites
+
+Step	Layer	What Happens
+1	UI	The user taps Save to Favorites on the School Details screen.
+2	UI	SchoolDetailViewModel receives the user’s action and coordinates the favorite-management operation.
+3	Domain	ManageFavoritesUseCase handles the favorite-management operation through FavoriteRepository.
+4	Data	FavoriteRepositoryImpl uses FavoritesLocalDataSource to handle the favorite data operation.
+5	Domain	The operation result returns through FavoriteRepository to the Domain layer.
+6	UI	SchoolDetailViewModel updates the UI state so the School Details screen reflects the favorite status.
